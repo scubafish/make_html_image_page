@@ -49,6 +49,23 @@ def main(argv):
 		print(args.v)
 		print(args.f)
 
+	# Overwrite default output page if new one specified
+	if args.htmlpage:
+		html_page = args.htmlpage
+
+	# TODO - check if already exists and fail
+	htmlfile = open(html_page, "w")
+
+	htmlfile.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">")
+	htmlfile.write("<html>\n<head><meta content=\"text/html; charset=ISO-8859-1\" http-equiv=\"content-type\">\n<title></title>\n")
+	htmlfile.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"$style_sheet\">\n")
+	htmlfile.write("</head>\n")
+	htmlfile.write("<body>\n")
+	htmlfile.write("<div style=\"text-align:center;\">\n")
+	htmlfile.write("<h2></h2>\n<br><br><br>\n</div>\n")
+	htmlfile.write("<div style=\"text-align:center; background: transparent url($negstrip) repeat-y fixed center; background-size: $negstrip_width")
+	htmlfile.write("px;\">\n")
+	htmlfile.write("<br><br><br>\n\n")
 
 	# Iterate and process each image
 	for x in args.f:
@@ -58,6 +75,16 @@ def main(argv):
 			print("size:", img.size)
 
 
+	# write the closing html info for the big thumbnail file
+	htmlfile.write("<hr style=\"width: 500px; height: 2px;\">\n")
+	htmlfile.write("<br><br><br><br>\n")
+	htmlfile.write("</div>\n")
+	htmlfile.write("<div style=\"text-align:center;\">\n<br><br><br><br><br><br><br><hr style=\"width: 100%; height: 2px;\"><br>\n")
+	htmlfile.write("All images are protected under copyright and may not be used, copied, altered, or reproduced in any way without the expressed written permission of the author.\n")
+	htmlfile.write("</div>\n")
+	htmlfile.write("</body>\n</html>\n")
+
+	htmlfile.close()
 
 if __name__ == "__main__":
 	main(sys.argv)
