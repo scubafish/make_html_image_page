@@ -72,12 +72,12 @@ def main(argv):
 
 	htmlfile.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">")
 	htmlfile.write("<html>\n<head><meta content=\"text/html; charset=ISO-8859-1\" http-equiv=\"content-type\">\n<title></title>\n")
-	htmlfile.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"$style_sheet\">\n")
+	htmlfile.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n" % style_sheet)
 	htmlfile.write("</head>\n")
 	htmlfile.write("<body>\n")
 	htmlfile.write("<div style=\"text-align:center;\">\n")
 	htmlfile.write("<h2></h2>\n<br><br><br>\n</div>\n")
-	htmlfile.write("<div style=\"text-align:center; background: transparent url($negstrip) repeat-y fixed center; background-size: %d" % negstrip_width)
+	htmlfile.write("<div style=\"text-align:center; background: transparent url(%s) repeat-y fixed center; background-size: %d" % (negstrip, negstrip_width))
 	htmlfile.write("px;\">\n")
 	htmlfile.write("<br><br><br>\n\n")
 
