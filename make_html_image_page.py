@@ -41,6 +41,7 @@ def main(argv):
 	# Instantiate the parser
 	parser = argparse.ArgumentParser(description='Rename images and videos from cameras')
 	parser.add_argument('--htmlpage', nargs='?', help='Name of generated HTML page. Default is index.html')
+	parser.add_argument('--imagelocation', nargs='?', help='URL where the images will be stored if not in the same place as html')
 	parser.add_argument('-v', action='store_true', help='Be Verbose')
 	parser.add_argument('--nofilename', action='store_true', help="Don't include file names under each image")
 	parser.add_argument('-f', required=True, nargs='+', help='Image files to process')
@@ -51,6 +52,7 @@ def main(argv):
 	if verbose:
 		print("Argument Values:")
 		print(args.htmlpage)
+		print(args.imagelocation)
 		print(args.v)
 		print(args.f)
 
@@ -66,6 +68,10 @@ def main(argv):
 	# Overwrite default output page if new one specified
 	if args.htmlpage:
 		html_page = args.htmlpage
+
+	# Overwrite default output page if new one specified
+	if args.imagelocation:
+		image_location_url = args.imagelocation
 
 	# TODO - check if already exists and fail
 	htmlfile = open(html_page, "w")
