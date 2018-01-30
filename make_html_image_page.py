@@ -33,6 +33,11 @@ def main(argv):
 	# The name of the generated HTML page
 	html_page = "index.html"
 
+	# The maximum width of any of the images. Used to calculate nedstrip width.
+	max_width = 0
+
+	negstrip_width = 0;
+
 	# Instantiate the parser
 	parser = argparse.ArgumentParser(description='Rename images and videos from cameras')
 	parser.add_argument('--htmlpage', nargs='?', help='Name of generated HTML page. Default is index.html')
@@ -49,6 +54,15 @@ def main(argv):
 		print(args.v)
 		print(args.f)
 
+	# Iterate each image and find the max width
+	for x in args.f:
+		with Image(filename=x) as img:
+			if img.width > max_width:
+				max_width = img.width
+
+	print("width:", max_width)
+	negstrip_width = max_width + 100
+
 	# Overwrite default output page if new one specified
 	if args.htmlpage:
 		html_page = args.htmlpage
@@ -63,7 +77,7 @@ def main(argv):
 	htmlfile.write("<body>\n")
 	htmlfile.write("<div style=\"text-align:center;\">\n")
 	htmlfile.write("<h2></h2>\n<br><br><br>\n</div>\n")
-	htmlfile.write("<div style=\"text-align:center; background: transparent url($negstrip) repeat-y fixed center; background-size: $negstrip_width")
+	htmlfile.write("<div style=\"text-align:center; background: transparent url($negstrip) repeat-y fixed center; background-size: %d" % negstrip_width)
 	htmlfile.write("px;\">\n")
 	htmlfile.write("<br><br><br>\n\n")
 
@@ -74,6 +88,15 @@ def main(argv):
 		with Image(filename=x) as img:
 			print("size:", img.size)
 
+			# Add the image to the "large" thumbnail page
+			htmlfile.write("<hr style=\"width: 500px; height: 2px;\">\n")
+			htmlfile.write("<img style=\"border: 5px solid white;\" alt=\"\" src=\"%s" % image_location_url)
+			htmlfile.write("%s\" width=%d height=%d vspace=\"20\">\n\n" % (x, img.width, img.height))
+
+			if args.nofilename == False:
+				htmlfile.write("<br><br>%s\n\n" % x)
+
+			htmlfile.write("<br><br><br><br>\n")
 
 	# write the closing html info for the big thumbnail file
 	htmlfile.write("<hr style=\"width: 500px; height: 2px;\">\n")
