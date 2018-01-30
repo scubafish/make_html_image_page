@@ -69,7 +69,7 @@ def main(argv):
 	if args.htmlpage:
 		html_page = args.htmlpage
 
-	# Overwrite default output page if new one specified
+	# Set image location URL
 	if args.imagelocation:
 		image_location_url = args.imagelocation
 
