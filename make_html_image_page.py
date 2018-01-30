@@ -30,9 +30,14 @@ def main(argv):
 	# https://www.foo.com/style.css
 	style_sheet = "style.css"
 
+	# The name of the generated HTML page
+	html_page = "index.html"
+
 	# Instantiate the parser
 	parser = argparse.ArgumentParser(description='Rename images and videos from cameras')
+	parser.add_argument('--htmlpage', nargs='?', help='Name of generated HTML page. Default is index.html')
 	parser.add_argument('-v', action='store_true', help='Be Verbose')
+	parser.add_argument('--nofilename', action='store_true', help="Don't include file names under each image")
 	parser.add_argument('-f', required=True, nargs='+', help='Image files to process')
 	args = parser.parse_args()
 
@@ -40,6 +45,7 @@ def main(argv):
 
 	if verbose:
 		print("Argument Values:")
+		print(args.htmlpage)
 		print(args.v)
 		print(args.f)
 
