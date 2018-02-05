@@ -41,6 +41,7 @@ def main(argv):
 	# Instantiate the parser
 	parser = argparse.ArgumentParser(description='Rename images and videos from cameras')
 	parser.add_argument('--softresize', type=int, default=0, help='Resize to specified in HTML only, without resizing image')
+	parser.add_argument('--title', help='Title for the top of the HTML page')
 	parser.add_argument('--htmlpage', help='Name of generated HTML page. Default is index.html')
 	parser.add_argument('--imagelocation', help='URL where the images will be stored if not in the same place as html')
 	parser.add_argument('-v', action='store_true', help='Be Verbose')
@@ -53,6 +54,7 @@ def main(argv):
 	if verbose:
 		print("Argument Values:")
 		print("softresize   :", args.softresize)
+		print("title        :", args.title)
 		print("htmlpage     :", args.htmlpage)
 		print("imagelocation:", args.imagelocation)
 		print("verbose      :", args.v)
@@ -86,13 +88,18 @@ def main(argv):
 
 	htmlfile = open(html_page, "w")
 
+	if args.title:
+		title = args.title
+	else:
+		title = ""
+
 	htmlfile.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">")
-	htmlfile.write("<html>\n<head><meta content=\"text/html; charset=ISO-8859-1\" http-equiv=\"content-type\">\n<title></title>\n")
+	htmlfile.write("<html>\n<head><meta content=\"text/html; charset=ISO-8859-1\" http-equiv=\"content-type\">\n<title>%s</title>\n" % title)
 	htmlfile.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n" % style_sheet)
 	htmlfile.write("</head>\n")
 	htmlfile.write("<body>\n")
 	htmlfile.write("<div style=\"text-align:center;\">\n")
-	htmlfile.write("<h2></h2>\n<br><br><br>\n</div>\n")
+	htmlfile.write("<h2>%s</h2>\n<br><br><br>\n</div>\n" % title)
 	htmlfile.write("<div style=\"text-align:center; background: transparent url(%s) repeat-y fixed center; background-size: %d" % (negstrip, negstrip_width))
 	htmlfile.write("px;\">\n")
 	htmlfile.write("<br><br><br>\n\n")
