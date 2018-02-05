@@ -41,8 +41,8 @@ def main(argv):
 	# Instantiate the parser
 	parser = argparse.ArgumentParser(description='Rename images and videos from cameras')
 	parser.add_argument('--softresize', type=int, default=0, help='Resize to specified in HTML only, without resizing image')
-	parser.add_argument('--htmlpage', nargs='?', help='Name of generated HTML page. Default is index.html')
-	parser.add_argument('--imagelocation', nargs='?', help='URL where the images will be stored if not in the same place as html')
+	parser.add_argument('--htmlpage', help='Name of generated HTML page. Default is index.html')
+	parser.add_argument('--imagelocation', help='URL where the images will be stored if not in the same place as html')
 	parser.add_argument('-v', action='store_true', help='Be Verbose')
 	parser.add_argument('--nofilename', action='store_true', help="Don't include file names under each image")
 	parser.add_argument('-f', required=True, nargs='+', help='Image files to process')
