@@ -40,6 +40,7 @@ def main(argv):
 
 	# Instantiate the parser
 	parser = argparse.ArgumentParser(description='Rename images and videos from cameras')
+	parser.add_argument('--softresize', type=int, default=0, help='Resize to specified in HTML only, without resizing image')
 	parser.add_argument('--htmlpage', nargs='?', help='Name of generated HTML page. Default is index.html')
 	parser.add_argument('--imagelocation', nargs='?', help='URL where the images will be stored if not in the same place as html')
 	parser.add_argument('-v', action='store_true', help='Be Verbose')
@@ -51,16 +52,23 @@ def main(argv):
 
 	if verbose:
 		print("Argument Values:")
-		print(args.htmlpage)
-		print(args.imagelocation)
-		print(args.v)
-		print(args.f)
+		print("softresize   :", args.softresize)
+		print("htmlpage     :", args.htmlpage)
+		print("imagelocation:", args.imagelocation)
+		print("verbose      :", args.v)
+		print("Images       :", args.f)
+		print()
+		print()
 
-	# Iterate each image and find the max width
-	for x in args.f:
-		with Image(filename=x) as img:
-			if img.width > max_width:
-				max_width = img.width
+	if args.softresize > 0:
+		# TODO - Fix this. If all images are vertical then this will be too wide.
+		max_width = args.softresize
+	else:
+		# Iterate each image and find the max width
+		for x in args.f:
+			with Image(filename=x) as img:
+				if img.width > max_width:
+					max_width = img.width
 
 	print("width:", max_width)
 	negstrip_width = max_width + 100
@@ -74,6 +82,8 @@ def main(argv):
 		image_location_url = args.imagelocation
 
 	# TODO - check if already exists and fail
+	# TODO - check if creation fails
+
 	htmlfile = open(html_page, "w")
 
 	htmlfile.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">")
@@ -94,10 +104,21 @@ def main(argv):
 		with Image(filename=x) as img:
 			print("size:", img.size)
 
-			# Add the image to the "large" thumbnail page
-			htmlfile.write("<hr style=\"width: 500px; height: 2px;\">\n")
+			width = img.width
+			height = img.height
+
+			if args.softresize > 0:
+				if width < height:
+					height = args.softresize
+					width = (height/img.height) * width
+				else:
+					width = args.softresize
+					height = (width/img.width) * height
+
+#			htmlfile.write("<hr style=\"width: 500px; height: 2px;\">\n")
+			htmlfile.write("<hr style=\"width: %dpx; height: 2px;\">\n" % max_width)
 			htmlfile.write("<img style=\"border: 5px solid white;\" alt=\"\" src=\"%s" % image_location_url)
-			htmlfile.write("%s\" width=%d height=%d vspace=\"20\">\n\n" % (x, img.width, img.height))
+			htmlfile.write("%s\" width=%d height=%d vspace=\"20\">\n\n" % (x, width, height))
 
 			if args.nofilename == False:
 				htmlfile.write("<br><br>%s\n\n" % x)
@@ -105,7 +126,7 @@ def main(argv):
 			htmlfile.write("<br><br><br><br>\n")
 
 	# write the closing html info for the big thumbnail file
-	htmlfile.write("<hr style=\"width: 500px; height: 2px;\">\n")
+	htmlfile.write("<hr style=\"width: %dpx; height: 2px;\">\n" % max_width)
 	htmlfile.write("<br><br><br><br>\n")
 	htmlfile.write("</div>\n")
 	htmlfile.write("<div style=\"text-align:center;\">\n<br><br><br><br><br><br><br><hr style=\"width: 100%; height: 2px;\"><br>\n")
