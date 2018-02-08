@@ -43,6 +43,7 @@ def main(argv):
 	parser.add_argument('--softresize', type=int, default=0, help='Resize to specified in HTML only, without resizing image')
 	parser.add_argument('--title', help='Title for the top of the HTML page')
 	parser.add_argument('--htmlpage', help='Name of generated HTML page. Default is index.html')
+	parser.add_argument('--style', help='URL where the style sheet will be found')
 	parser.add_argument('--imagelocation', help='URL where the images will be stored if not in the same place as html')
 	parser.add_argument('-v', action='store_true', help='Be Verbose')
 	parser.add_argument('--nofilename', action='store_true', help="Don't include file names under each image")
@@ -56,6 +57,7 @@ def main(argv):
 		print("softresize   :", args.softresize)
 		print("title        :", args.title)
 		print("htmlpage     :", args.htmlpage)
+		print("style        :", args.style)
 		print("imagelocation:", args.imagelocation)
 		print("verbose      :", args.v)
 		print("Images       :", args.f)
@@ -87,6 +89,9 @@ def main(argv):
 	# TODO - check if creation fails
 
 	htmlfile = open(html_page, "w")
+
+	if args.style:
+		style_sheet = args.style
 
 	if args.title:
 		title = args.title
