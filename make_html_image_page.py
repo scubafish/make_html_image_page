@@ -24,7 +24,7 @@ def main(argv):
 
 	# The URL the negstrip file can be found at
 	# http://www.foo.com/images/negstrip.jpg"
-	negstrip = "negstrip.jpg"
+	negstrip_url = "negstrip.jpg"
 
 	# The URL your stylesheet for this page can be found at
 	# https://www.foo.com/style.css
@@ -44,6 +44,7 @@ def main(argv):
 	parser.add_argument('--title', help='Title for the top of the HTML page')
 	parser.add_argument('--htmlpage', help='Name of generated HTML page. Default is index.html')
 	parser.add_argument('--style', help='URL where the style sheet will be found')
+	parser.add_argument('--negstrip', help='URL where the background negative strip image is found')
 	parser.add_argument('--imagelocation', help='URL where the images will be stored if not in the same place as html')
 	parser.add_argument('-v', action='store_true', help='Be Verbose')
 	parser.add_argument('--nofilename', action='store_true', help="Don't include file names under each image")
@@ -58,6 +59,7 @@ def main(argv):
 		print("title        :", args.title)
 		print("htmlpage     :", args.htmlpage)
 		print("style        :", args.style)
+		print("negstrip     :", args.negstrip)
 		print("imagelocation:", args.imagelocation)
 		print("verbose      :", args.v)
 		print("Images       :", args.f)
@@ -85,6 +87,10 @@ def main(argv):
 	if args.imagelocation:
 		image_location_url = args.imagelocation
 
+	# Set negstrip location URL
+	if args.negstrip:
+		negstrip_url = args.negstrip
+
 	# TODO - check if already exists and fail
 	# TODO - check if creation fails
 
@@ -105,7 +111,7 @@ def main(argv):
 	htmlfile.write("<body>\n")
 	htmlfile.write("<div style=\"text-align:center;\">\n")
 	htmlfile.write("<h2>%s</h2>\n<br><br><br>\n</div>\n" % title)
-	htmlfile.write("<div style=\"text-align:center; background: transparent url(%s) repeat-y fixed center; background-size: %d" % (negstrip, negstrip_width))
+	htmlfile.write("<div style=\"text-align:center; background: transparent url(%s) repeat-y fixed center; background-size: %d" % (negstrip_url, negstrip_width))
 	htmlfile.write("px;\">\n")
 	htmlfile.write("<br><br><br>\n\n")
 
